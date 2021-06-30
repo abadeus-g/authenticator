@@ -1,4 +1,4 @@
-# authenticator
+# Authenticator
 
 A new Mobius package project.
 
