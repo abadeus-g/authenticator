@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:frozen_freezed/frozen_freezed.dart';
+import 'package:frozenmobs/frozenmobs.dart';
 
 /// {@template IAuthFacade}
 /// Repository which manages user authentication.

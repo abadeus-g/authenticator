@@ -3,7 +3,7 @@ import 'package:cache/cache.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase;
 import 'package:flutter/material.dart';
-import 'package:frozen_freezed/frozen_freezed.dart';
+import 'package:frozenmobs/frozenmobs.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 
@@ -13,8 +13,7 @@ import 'package:meta/meta.dart';
 class FirebaseAuthenticator implements IAuthFacade {
   ///{@macro FirebaseAuthenticator}
   FirebaseAuthenticator(
-      {
-        CacheClient? cache,
+      {CacheClient? cache,
       firebase.FirebaseAuth? fireAuth,
       GoogleSignIn? googleSignIn})
       : _cacheClient = cache ?? CacheClient(),
@@ -31,21 +30,27 @@ class FirebaseAuthenticator implements IAuthFacade {
   static const userCacheKey = '__user_cache_key__';
 
   /// Returns a stream of fired user.
-  /// Defaults to [FiredUser.absent] if there is no cached user.
-  Stream<FiredUser> get firedUser {
+  /// Defaults to [UserInterface.unknown] if there is no cached user.
+  Stream<UserInterface> get userInterface {
     return _firebaseAuth.authStateChanges().map(
       (user) {
-        final fired = user == null ? FiredUser.absent : user.toFiredUser;
-        _cacheClient.write(key: userCacheKey, value: fired);
-        return fired;
+        final userInterface =
+            user == null ? UserInterface.unknown : user.toUserInterface;
+        _cacheClient.write(key: userCacheKey, value: userInterface);
+        return userInterface;
       },
     );
   }
 
+  /// Retrieve the authenticated
+  Future<Option<UserInterface>> authenticatedUserInterface() async =>
+      optionOf(_firebaseAuth.currentUser?.toUserInterface);
+
   /// Returns the current cached user.
-  /// Defaults to [FiredUser.absent] if there is no cached user.
-  FiredUser get currentFiredUser =>
-      _cacheClient.read<FiredUser>(key: userCacheKey) ?? FiredUser.absent;
+  /// Defaults to [UserInterface.unknown] if there is no cached user.
+  UserInterface get cachedUserInterface =>
+      _cacheClient.read<UserInterface>(key: userCacheKey) ??
+      UserInterface.unknown;
 
   @override
   Future<Either<Authfailure, Unit>> registerWithEmailAndPassword(
@@ -117,14 +122,13 @@ class FirebaseAuthenticator implements IAuthFacade {
 }
 
 extension on firebase.User {
-  FiredUser get toFiredUser {
-    return FiredUser(
-      uniqueId: UniqueId.fromUniqueString(uid),
+  UserInterface get toUserInterface {
+    return UserInterface(
+      uid: UniqueId.fromUniqueString(uid),
       name: displayName,
-      email: email,
-      picUrl: photoURL,
-      //TODOimplement contact in frozen_freezed package and push it
-      //contact: phoneNumber,
+      email: EmailAddress(email!),
+      photo: photoURL,
+      phoneNumber: phoneNumber,
     );
   }
 }
