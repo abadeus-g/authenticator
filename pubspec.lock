@@ -15,13 +15,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  cache:
+  cachemob:
     dependency: "direct main"
     description:
-      path: "packages/cache"
-      relative: true
-    source: path
-    version: "1.0.0"
+      path: "."
+      ref: main
+      resolved-ref: d6db5b321d4d1b7d70f5b56e01af89ce21ee5964
+      url: "https://github.com/abadeus-g/cachemob.git"
+    source: git
+    version: "0.0.1"
   characters:
     dependency: transitive
     description:

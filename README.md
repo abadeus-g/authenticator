@@ -1,6 +1,6 @@
 # Authenticator
 
-A new Mobius package project.
+A new authentication process package from Mobius.
 
 ## Getting Started
 

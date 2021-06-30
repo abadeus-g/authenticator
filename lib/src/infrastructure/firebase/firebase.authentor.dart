@@ -1,5 +1,5 @@
 import 'package:authenticator/src/core/i.auth.facade.dart';
-import 'package:cache/cache.dart';
+import 'package:cachemob/cachemob.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase;
 import 'package:flutter/material.dart';
@@ -13,16 +13,16 @@ import 'package:meta/meta.dart';
 class FirebaseAuthenticator implements IAuthFacade {
   ///{@macro FirebaseAuthenticator}
   FirebaseAuthenticator(
-      {CacheClient? cache,
+      {CacheMob? cache,
       firebase.FirebaseAuth? fireAuth,
       GoogleSignIn? googleSignIn})
-      : _cacheClient = cache ?? CacheClient(),
+      : _cacheMob = cache ?? CacheMob(),
         _firebaseAuth = fireAuth ?? firebase.FirebaseAuth.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn.standard();
 
   final firebase.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
-  final CacheClient _cacheClient;
+  final CacheMob _cacheMob;
 
   /// User cache key.
   /// Should only be used for testing purposes.
@@ -36,7 +36,7 @@ class FirebaseAuthenticator implements IAuthFacade {
       (user) {
         final userInterface =
             user == null ? UserInterface.unknown : user.toUserInterface;
-        _cacheClient.write(key: userCacheKey, value: userInterface);
+        _cacheMob.write(key: userCacheKey, value: userInterface);
         return userInterface;
       },
     );
@@ -49,8 +49,7 @@ class FirebaseAuthenticator implements IAuthFacade {
   /// Returns the current cached user.
   /// Defaults to [UserInterface.unknown] if there is no cached user.
   UserInterface get cachedUserInterface =>
-      _cacheClient.read<UserInterface>(key: userCacheKey) ??
-      UserInterface.unknown;
+      _cacheMob.read<UserInterface>(key: userCacheKey) ?? UserInterface.unknown;
 
   @override
   Future<Either<Authfailure, Unit>> registerWithEmailAndPassword(

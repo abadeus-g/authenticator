@@ -10,14 +10,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cache:
-    path: packages/cache
-  dartz: ^0.10.0-nullsafety.2
-  firebase_auth: ^1.4.1
+  cachemob:
+    git:
+      url: https://github.com/abadeus-g/cachemob.git
+      ref: main
   frozenmobs:
-    git: 
+    git:
       url: https://github.com/abadeus-g/frozenmobs.git
       ref: main
+  dartz: ^0.10.0-nullsafety.2
+  firebase_auth: ^1.4.1
   github_sign_in: ^0.0.4
   google_sign_in: ^5.0.4
   meta: ^1.4.0
