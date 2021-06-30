@@ -1,1 +1,1 @@
-export 'firebase.authentor.dart';
+export 'firebase.facade.dart';

@@ -4,10 +4,10 @@ import 'package:frozenmobs/frozenmobs.dart';
 import 'firebase.authentor.dart';
 
 /// {@template firebaseAuthFacade}
-/// Repository which manages user authentication backed by Firebase.
+/// Repository which manages user authentication through Google,Email Credentials
+/// and Phone Number process (Coming Soon) backed by Firebase.
 /// {@endtemplate}
 class FirebaseAuthFacade {
-
   ///{@macro firebaseAuthFacade}
   FirebaseAuthFacade({
     FirebaseAuthenticator? authenticator,
